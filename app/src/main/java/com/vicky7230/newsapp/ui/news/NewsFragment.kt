@@ -26,6 +26,7 @@ class NewsFragment : Fragment(), NewsAdapter.Callback {
     companion object {
         val SOURCE_ID = "id"
         val SOURCE_NAME = "name"
+        val NEWS_LIST = "news"
     }
 
     @Inject
@@ -53,14 +54,23 @@ class NewsFragment : Fragment(), NewsAdapter.Callback {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         newsAdapter.setCallback(this)
-        init()
+        init(savedInstanceState)
     }
 
-    private fun init() {
+    private fun init(savedInstanceState: Bundle?) {
 
         news_list.layoutManager = LinearLayoutManager(context)
         news_list.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         news_list.adapter = newsAdapter
+
+        val newsList = savedInstanceState?.getParcelableArrayList<Article>(NEWS_LIST)
+
+        if (newsList != null) {
+            progress.visibility = View.GONE
+            news_list.visibility = View.VISIBLE
+            newsAdapter.updateItems(newsList)
+            return
+        }
 
         newsViewModel.news.observe(this.viewLifecycleOwner, Observer {
             when (it) {
@@ -79,6 +89,11 @@ class NewsFragment : Fragment(), NewsAdapter.Callback {
         arguments?.takeIf { it.containsKey(SOURCE_ID) }?.apply {
             newsViewModel.getNews(getString(SOURCE_ID))
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putParcelableArrayList(NEWS_LIST, newsAdapter.getItems())
+        super.onSaveInstanceState(outState)
     }
 
     override fun onItemClick(article: Article) {

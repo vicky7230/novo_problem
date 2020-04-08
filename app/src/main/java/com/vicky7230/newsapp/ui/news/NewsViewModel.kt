@@ -16,7 +16,7 @@ class NewsViewModel @Inject constructor(
 ) : BaseViewModel() {
 
 
-    val news = MutableLiveData<Resource<MutableList<Article>>>()
+    val news = MutableLiveData<Resource<ArrayList<Article>>>()
 
     fun getNews(source: String?) {
         viewModelScope.launch {
@@ -26,7 +26,7 @@ class NewsViewModel @Inject constructor(
                 is Resource.Success -> {
                     val jsonObject = response.data.asJsonObject
                     if (jsonObject["status"].asString == "ok") {
-                        val sourcesFromNetwork: MutableList<Article> = arrayListOf()
+                        val sourcesFromNetwork: ArrayList<Article> = arrayListOf()
                         val newsJsonArray = jsonObject["articles"].asJsonArray
                         newsJsonArray
                             .forEach { newsJsonElement: JsonElement ->
@@ -41,7 +41,7 @@ class NewsViewModel @Inject constructor(
                             }
 
                         news.value =
-                            Resource.Success(sourcesFromNetwork.take(10).toMutableList())
+                            Resource.Success(sourcesFromNetwork.take(10) as ArrayList<Article>)
                     } else {
                         Resource.Error(IOException(jsonObject.get("message").asString))
                     }

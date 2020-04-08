@@ -37,7 +37,7 @@ class HomeActivity : BaseActivity(), HasAndroidInjector {
     private fun init() {
 
         setSupportActionBar(toolbar)
-
+        tab_layout.setupWithViewPager(pager)
 
         homeViewModel.resource.observe(this, Observer {
             when (it) {
@@ -48,10 +48,7 @@ class HomeActivity : BaseActivity(), HasAndroidInjector {
                 }
                 is Resource.Success -> {
                     hideLoading()
-                    pager.adapter = PagerAdapter(it.data, this@HomeActivity)
-                    TabLayoutMediator(tab_layout, pager) { tab, position ->
-                        tab.text = it.data[position].name
-                    }.attach()
+                    pager.adapter = PagerAdapter(it.data, supportFragmentManager)
                 }
             }
         })

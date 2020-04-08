@@ -15,8 +15,9 @@ import kotlinx.android.synthetic.main.news_list_item.view.*
 import timber.log.Timber
 import java.text.SimpleDateFormat
 import java.util.*
+import kotlin.collections.ArrayList
 
-class NewsAdapter(private var newsArrayList: MutableList<Article>) :
+class NewsAdapter(private var newsArrayList: ArrayList<Article>) :
     RecyclerView.Adapter<NewsViewHolder>() {
     interface Callback {
         fun onItemClick(article: Article)
@@ -32,10 +33,14 @@ class NewsAdapter(private var newsArrayList: MutableList<Article>) :
         this.callback = callback
     }
 
-    fun updateItems(newsArrayList: MutableList<Article>) {
+    fun updateItems(newsArrayList: ArrayList<Article>) {
         this.newsArrayList.clear()
         this.newsArrayList = newsArrayList
         notifyDataSetChanged()
+    }
+
+    fun getItems() :ArrayList<Article>{
+        return newsArrayList
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): NewsViewHolder {
