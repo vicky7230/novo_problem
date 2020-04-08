@@ -8,6 +8,7 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.recyclerview.widget.DividerItemDecoration
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.vicky7230.newsapp.R
 import com.vicky7230.newsapp.data.network.Article
@@ -58,6 +59,7 @@ class NewsFragment : Fragment(), NewsAdapter.Callback {
     private fun init() {
 
         news_list.layoutManager = LinearLayoutManager(context)
+        news_list.addItemDecoration(DividerItemDecoration(context, DividerItemDecoration.VERTICAL))
         news_list.adapter = newsAdapter
 
         newsViewModel.news.observe(this.viewLifecycleOwner, Observer {

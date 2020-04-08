@@ -25,7 +25,7 @@
         android:layout_marginLeft="15dp"
         android:ellipsize="end"
         android:fontFamily="@font/acta_bold"
-        android:maxLines="4"
+        android:maxLines="3"
         android:textColor="@android:color/black"
         android:textSize="18sp"
         app:layout_constraintLeft_toRightOf="@id/image"
